@@ -340,7 +340,7 @@ const ProgressionPage = ({exercises,sessions,weeklyGoal,onSetGoal,onBack,onSelec
         <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:"#3a5c47",lineHeight:1.9,marginBottom:24,letterSpacing:".04em"}}>Bienvenue dans ton espace progression.<br/>Combien de séances vises-tu par semaine ?</div>
         <Lbl>Objectif séances / semaine</Lbl>
         <div style={{display:"flex",gap:6,marginBottom:16,flexWrap:"wrap"}}>
-          {[2,3,4,5,6,7].map(n=><button key={n} className={`toggle-btn ${goalInput==n?"active":""}`} onClick={()=>setGoalInput(n)} style={{flex:"none",width:46,padding:"11px 0",textAlign:"center"}}>{n}</button>)}
+          {[2,3,4,5,6,7].map(n=><button key={n} className={`toggle-btn ${goalInput===n?"active":""}`} onClick={()=>setGoalInput(n)} style={{flex:"none",width:46,padding:"11px 0",textAlign:"center"}}>{n}</button>)}
         </div>
         <div style={{marginBottom:24}}><input type="number" className="neo-input" placeholder="ou saisir un nombre..." min="1" max="14" value={goalInput} onChange={e=>setGoalInput(parseInt(e.target.value)||"")}/></div>
         <button className="submit-btn full" onClick={()=>goalInput&&onSetGoal(parseInt(goalInput))} disabled={!goalInput||saving}>{saving?"SAUVEGARDE...":"Valider mon objectif"}</button>
@@ -608,7 +608,7 @@ export default function App() {
   },[]);
 
   // Load data when user logs in
-  useEffect(()=>{ if(user) loadAll(); else { setExercises([]); setSessions([]); setWeeklyGoal(null); } },[user]);
+  useEffect(()=>{ if(user) loadAll(); else { setExercises([]); setSessions([]); setWeeklyGoal(null); } },[user, loadAll]);
 
   const loadAll = async () => {
     setDataLoading(true);
