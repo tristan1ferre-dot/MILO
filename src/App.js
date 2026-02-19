@@ -608,7 +608,7 @@ export default function App() {
   },[]);
 
   // Load data when user logs in
-  useEffect(()=>{ if(user) loadAll(); else { setExercises([]); setSessions([]); setWeeklyGoal(null); } },[user, loadAll]);
+  useEffect(()=>{ if(user) loadAll(); else { setExercises([]); setSessions([]); setWeeklyGoal(null); } },[user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadAll = async () => {
     setDataLoading(true);
