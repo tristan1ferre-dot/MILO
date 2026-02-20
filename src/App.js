@@ -6,36 +6,20 @@ const MUSCLE_GROUPS = ["Abdominaux","Avant-bras","Biceps","Dos","Épaules","Fess
 const DAYS_FR   = ["LUN","MAR","MER","JEU","VEN","SAM","DIM"];
 const MONTHS_FR = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
 
-// ── Theme definitions ────────────────────────────────────────────────────────
-const THEMES = {
-  dark: {
-    bg:"#0f0f0f", bgCard:"#161616", bgCardHover:"#1c1c1c",
-    border:"#1e2e24", borderHover:"#2e5040",
-    green:"#00e676", greenDim:"#00e67633", greenFaint:"#00e67611", greenText:"#00c864",
-    blue:"#4da6ff", blueDim:"#4da6ff18",
-    red:"#ff5252", redDim:"#ff525211",
-    orange:"#ffab40", orangeDim:"#ffab4018",
-    purple:"#9c6fff", purpleDim:"#9c6fff18",
-    textPrimary:"#f0f0f0", textSecondary:"#8a9e92", textMuted:"#3a5244",
-    gridColor:"#00e67604",
-    navBg:"rgba(22,22,22,.82)", navBorder:"rgba(255,255,255,.07)",
-    navShadow:"0 8px 32px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.1)",
-    scanlines:true,
-  },
-  light: {
-    bg:"#f5f5f5", bgCard:"#ffffff", bgCardHover:"#f0f0f0",
-    border:"#d0d0d0", borderHover:"#aaaaaa",
-    green:"#00e676", greenDim:"#00e67633", greenFaint:"#00e67611", greenText:"#00c864",
-    blue:"#4da6ff", blueDim:"#4da6ff18",
-    red:"#ff5252", redDim:"#ff525211",
-    orange:"#ffab40", orangeDim:"#ffab4018",
-    purple:"#9c6fff", purpleDim:"#9c6fff18",
-    textPrimary:"#111111", textSecondary:"#555555", textMuted:"#aaaaaa",
-    gridColor:"#00000005",
-    navBg:"rgba(240,240,240,.82)", navBorder:"rgba(0,0,0,.08)",
-    navShadow:"0 8px 32px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.05),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(0,0,0,.04)",
-    scanlines:false,
-  },
+// ── Theme ────────────────────────────────────────────────────────────────────
+const T = {
+  bg:"#0f0f0f", bgCard:"#161616", bgCardHover:"#1c1c1c",
+  border:"#1e2e24", borderHover:"#2e5040",
+  green:"#00e676", greenDim:"#00e67633", greenFaint:"#00e67611", greenText:"#00c864",
+  blue:"#4da6ff", blueDim:"#4da6ff18",
+  red:"#ff5252", redDim:"#ff525211",
+  orange:"#ffab40", orangeDim:"#ffab4018",
+  purple:"#9c6fff", purpleDim:"#9c6fff18",
+  textPrimary:"#f0f0f0", textSecondary:"#8a9e92", textMuted:"#3a5244",
+  gridColor:"#00e67604",
+  navBg:"rgba(22,22,22,.82)", navBorder:"rgba(255,255,255,.07)",
+  navShadow:"0 8px 32px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.1)",
+  scanlines:true,
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -225,7 +209,7 @@ const Shell = ({t,children,page,onNav,onOpenSettings}) => (
     <div style={{position:"fixed",inset:0,pointerEvents:"none",backgroundImage:`linear-gradient(${t.gridColor} 1px,transparent 1px),linear-gradient(90deg,${t.gridColor} 1px,transparent 1px)`,backgroundSize:"40px 40px",animation:"gridMove 12s linear infinite"}}/>
     {/* Scanlines (dark only) */}
     {t.scanlines&&<div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:999,background:"repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.012) 3px,rgba(0,0,0,.012) 4px)"}}/>}
-    <div style={{maxWidth:480,margin:"0 auto",padding:"28px 18px 110px",position:"relative"}}>
+    <div style={{width:"100%",padding:"28px 18px 110px",position:"relative"}}>
       {children}
     </div>
     {onNav&&(
@@ -263,23 +247,13 @@ const ProgBar = ({t,pct,color}) => (
 );
 
 // ── Settings Panel ───────────────────────────────────────────────────────────
-const SettingsPanel = ({t,theme,onTheme,onLogout,onClose,user}) => (
+const SettingsPanel = ({t,onLogout,onClose,user}) => (
   <div style={{position:"fixed",inset:0,zIndex:300}} onClick={onClose}>
     <div style={{position:"absolute",top:68,right:18,width:260,background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:16,overflow:"hidden",boxShadow:`0 8px 40px rgba(0,0,0,.35)`,animation:"fadeSlideUp .2s ease"}} onClick={e=>e.stopPropagation()}>
       <div style={{padding:"16px 18px 12px",borderBottom:`1px solid ${t.border}`}}>
         <div style={{fontFamily:"'Orbitron',sans-serif",fontSize:11,letterSpacing:".3em",color:t.green}}>PARAMÈTRES</div>
       </div>
-      <div style={{padding:"14px 18px"}}>
-        <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:".3em",color:t.textMuted,textTransform:"uppercase",marginBottom:10}}>Apparence</div>
-        <div style={{display:"flex",gap:6}}>
-          {[{id:"dark",Icon:IconMoon,label:"Sombre"},{id:"light",Icon:IconSun,label:"Clair"}].map(({id,Icon,label})=>(
-            <button key={id} onClick={()=>onTheme(id)} style={{flex:1,padding:"10px 8px",border:`1px solid ${theme===id?t.green:t.border}`,background:theme===id?t.greenFaint:"transparent",color:theme===id?t.green:t.textSecondary,fontFamily:"'Share Tech Mono',monospace",fontSize:10,cursor:"pointer",transition:"all .2s",borderRadius:10,display:"flex",flexDirection:"column",alignItems:"center",gap:5}}>
-              <Icon/><span>{label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-      <div style={{height:1,background:t.border}}/>
+
       <div style={{padding:"12px 18px",fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:t.textSecondary}}>{user?.email}</div>
       <div style={{height:1,background:t.border}}/>
       <button onClick={onLogout} style={{width:"100%",padding:"13px 18px",background:"transparent",border:"none",color:t.red,cursor:"pointer",transition:"all .2s",textAlign:"left",display:"flex",alignItems:"center",gap:10,fontFamily:"'Share Tech Mono',monospace",fontSize:12,letterSpacing:".12em"}}>
@@ -957,14 +931,11 @@ export default function App() {
   const [dataLoading,setDataLoading] = useState(false);
   const [showSession,setShowSession] = useState(false);
   const [showSettings,setShowSettings]= useState(false);
-  const [themeName,setThemeName]     = useState(() => localStorage.getItem("milo_theme")||"dark");
 
-  const t = THEMES[themeName];
 
-  const handleTheme = (name) => {
-    setThemeName(name);
-    localStorage.setItem("milo_theme",name);
-  };
+  const t = T;
+
+
 
   useEffect(()=>{
     supabase.auth.getSession().then(({data:{session}})=>{ setUser(session?.user??null); setAuthLoading(false); });
@@ -1015,7 +986,7 @@ export default function App() {
 
   return (
     <>
-      {showSettings&&<SettingsPanel t={t} theme={themeName} onTheme={handleTheme} onLogout={logout} onClose={()=>setShowSettings(false)} user={user}/>}
+      {showSettings&&<SettingsPanel t={t} onLogout={logout} onClose={()=>setShowSettings(false)} user={user}/>}
       {showSession&&<SessionPage t={t} exercises={exercises} onSave={saveSession} onBack={()=>setShowSession(false)} saving={saving}/>}
 
       {page==="ex-stats"&&selectedEx
