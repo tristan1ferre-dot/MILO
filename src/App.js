@@ -59,22 +59,7 @@ const computeAdvice = (entries) => {
   return null;
 };
 
-// Compute muscle fatigue: 0=fresh, 5=needs rest
-const computeMuscleFatigue = (sessions) => {
-  const fatigue = {};
-  MUSCLE_GROUPS.forEach(m=>{ fatigue[m]=0; });
-  const now=new Date();
-  sessions.forEach(s=>{
-    const daysAgo=(now-new Date(s.date))/(1000*60*60*24);
-    if(daysAgo>7) return;
-    const weight=daysAgo<1?5:daysAgo<2?4:daysAgo<3?3:daysAgo<4?2:1;
-    s.entries&&s.entries.forEach(e=>{
-      const ex_muscles=e.muscles||[];
-      ex_muscles.forEach(m=>{ if(fatigue[m]!==undefined) fatigue[m]=Math.min(5,fatigue[m]+weight); });
-    });
-  });
-  return fatigue;
-};
+
 
 // Compute weekly streak
 const computeStreak = (sessions) => {
